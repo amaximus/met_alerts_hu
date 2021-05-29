@@ -41,15 +41,10 @@ If you want to show only the dominant pollen you may skip using the pollen-hu-ca
 ```
 type: conditional
 conditions:
-  - entity: sensor.pollen
+  - entity: sensor.met_alerts
     state_not: '0'
-  - entity: sensor.pollen
-    state_not: '1'
-  - entity: sensor.pollen
-    state_not: '2'
 card:
   type: custom:button-card
-  icon: mdi:blur
   size: 30px
   styles:
     label:
@@ -58,15 +53,15 @@ card:
       - height: 80px
     icon:
       - color: red
-  label: >
-    [[[
-      var pollen = states['sensor.pollen'].attributes.dominant_pollen;
-      return pollen;
-    ]]]
-  show_label: true
-  show_name: false
-  entity: sensor.pollen
-  color_type: icon
+    label: >
+      [[[
+        var met_alert = states['sensor.met_alert'].attributes.dominant_alert;
+        return met_alert;
+      ]]]
+show_label: true
+show_name: false
+entity: sensor.met_alert
+color_type: icon
 ```
 
 ## Thanks
