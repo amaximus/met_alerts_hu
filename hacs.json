@@ -1,0 +1,7 @@
+{
+  "name": "MET Alerts Hungary",
+  "country": ["HU"],
+  "domains": ["met_alerts_hu"],
+  "render_readme": "true",
+  "iot_class": ["Assumed State", "Cloud Polling"] 
+}
