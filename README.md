@@ -7,7 +7,7 @@
 This custom component gathers meteo alerts in Hungary from met.hu.
 
 The state of the sensor will be the level of most dominant alert. The name of the alert with highest alert level
-will also be added into dedicated attributes.
+will also be added into dedicated attribute.
 
 The sensor will also report in an attribute the values of all other meteo alerts, if any.
 
@@ -24,7 +24,7 @@ Define sensor with the following configuration parameters:<br />
 | Name | Optional | `Default` | Description |
 | :---- | :---- | :------- | :----------- |
 | name | **Y** | `met_alerts_hu` | name of the sensor |
-| region_id | **Y** | `101 (Budapest)` | region identifier  |
+| region_id | **Y** | `101 (Budapest)` | region identifier |
 ---
 
 region_id can found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php).
@@ -36,7 +36,7 @@ name: 'MET riasztás'
 ```
 
 #### Lovelace UI
-If you want to show only the dominant pollen you may skip using the pollen-hu-card and use the following:
+If you want to show the dominant alert use the following:
 
 ```
 type: conditional
@@ -55,12 +55,12 @@ card:
       - color: red
     label: >
       [[[
-        var met_alert = states['sensor.met_alert'].attributes.dominant_alert;
+        var met_alert = states['sensor.met_alerts'].attributes.dominant_met_alert;
         return met_alert;
       ]]]
 show_label: true
 show_name: false
-entity: sensor.met_alert
+entity: sensor.met_alerts
 color_type: icon
 ```
 

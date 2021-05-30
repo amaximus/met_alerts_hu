@@ -50,14 +50,14 @@ def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
 
 async def async_get_mdata(self):
     mjson = {}
-    
+
     url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wahx&kod=' + self._region_id
     async with self._session.get(url) as response:
         rsp = await response.text()
 
     no_newline = rsp.replace("\n","").replace("\r","")
     if not re.search("Nincs",no_newline):
-      tags = no_newline.replace("colspan=3>",">{\"alarms\":[<")\
+      tags = no_newline.replace("colspan=3>",">{\"alerts\":[<")\
                        .replace("</th></tr>","></th")
       p_json = re.sub(r'/w([1-9])',r'>{"level":"\1","type":"<', tags) \
                  .replace("</tr>","\"}</tr>")
@@ -65,7 +65,8 @@ async def async_get_mdata(self):
       f1_json = re.sub(r'\([0-9:]* UTC\)\[wahx\]','"}',no_tags) \
                   .replace("Kiadva: ","],\"updated\":\"")
       f2_json = re.sub(r'\s+',' ',f1_json)
-      ff_json = re.sub(r'\s*"\s*','"',f2_json)
+      ff_json = re.sub(r'\s*"\s*','\"',f2_json) \
+                .replace("'","\"")
 
       mjson = json.loads(ff_json)
     return mjson
@@ -96,7 +97,6 @@ class METAlertHUSensor(Entity):
                     attr["dominant_met_alert_value"] = int(val)
                     attr["dominant_met_alert"] = item.get('type')
                     dominant_value = int(val)
-
         attr["provider"] = CONF_ATTRIBUTION
         return attr
 
