@@ -64,6 +64,8 @@ entity: sensor.met_alerts
 color_type: icon
 ```
 
+![Most dominant meteo alert example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert.png)
+
 ## Thanks
 
 Thanks to all the people who have contributed!
