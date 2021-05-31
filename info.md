@@ -53,11 +53,11 @@ card:
       - height: 80px
     icon:
       - color: red
-    label: >
-      [[[
-        var met_alert = states['sensor.met_alerts'].attributes.dominant_met_alert;
-        return met_alert;
-      ]]]
+  label: >
+    [[[
+      var met_alert = states['sensor.met_alerts'].attributes.dominant_met_alert;
+      return met_alert;
+    ]]]
 show_label: true
 show_name: false
 entity: sensor.met_alerts
