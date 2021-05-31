@@ -58,10 +58,10 @@ card:
       var met_alert = states['sensor.met_alerts'].attributes.dominant_met_alert;
       return met_alert;
     ]]]
-show_label: true
-show_name: false
-entity: sensor.met_alerts
-color_type: icon
+  show_label: true
+  show_name: false
+  entity: sensor.met_alerts
+  color_type: icon
 ```
 
 ![Most dominant meteo alert example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert.png)
