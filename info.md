@@ -52,16 +52,29 @@ card:
     card:
       - height: 80px
     icon:
-      - color: red
+      - color: >
+          [[[
+            var met_level = states['sensor.met_alerts'].state;
+            if ( met_level == 0 ) {
+              return "green";
+            } else if ( met_level == 1 ) {
+              return "var(--paper-item-icon-active-color)";
+            } else if ( met_level == 2 ) {
+              return "orange";
+            } else if ( met_level == 3 ) {
+              return "red";
+            }
+            return "black";
+          ]]]
   label: >
     [[[
       var met_alert = states['sensor.met_alerts'].attributes.dominant_met_alert;
       return met_alert;
     ]]]
-show_label: true
-show_name: false
-entity: sensor.met_alerts
-color_type: icon
+  show_label: true
+  show_name: false
+  entity: sensor.met_alerts
+  color_type: icon
 ```
 
 ![Most dominant meteo alert example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert.png)

@@ -52,7 +52,20 @@ card:
     card:
       - height: 80px
     icon:
-      - color: red
+      - color: >
+          [[[
+            var met_level = states['sensor.met_alerts'].state;
+            if ( met_level == 0 ) {
+              return "green";
+            } else if ( met_level == 1 ) {
+              return "var(--paper-item-icon-active-color)";
+            } else if ( met_level == 2 ) {
+              return "orange";
+            } else if ( met_level == 3 ) {
+              return "red";
+            }
+            return "black";
+          ]]]
   label: >
     [[[
       var met_alert = states['sensor.met_alerts'].attributes.dominant_met_alert;
