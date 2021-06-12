@@ -4,12 +4,12 @@
 
 # Home Assistant custom component for meteo alerts in Hungary
 
-This custom component gathers meteo alerts in Hungary from met.hu.
+This custom component gathers meteo alerts from met.hu (valid only for Hungary).
 
-The state of the sensor will be the level of most dominant alert. The name of the alert with highest alert level
+The state of the sensor will be the alert level of most dominant alert. The name of the alert with highest alert level
 will also be added into dedicated attribute.
 
-The sensor will also report in an attribute the values of all other meteo alerts, if any.
+The sensor will also report in attributes the values of all other meteo alerts, if there are any.
 
 #### Installation
 The easiest way to install it is through [HACS (Home Assistant Community Store)](https://github.com/hacs/integration),
