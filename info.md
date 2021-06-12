@@ -7,7 +7,7 @@
 This custom component gathers meteo alerts from met.hu (valid only for Hungary).
 
 The state of the sensor will be the alert level of most dominant alert. The name of the alert with highest alert level
-will also be added into dedicated attribute.
+will also be added into a dedicated attribute.
 
 The sensor will also report in attributes the values of all other meteo alerts, if there are any.
 
