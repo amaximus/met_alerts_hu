@@ -13,7 +13,7 @@ The sensor will also report in attributes the values of all other meteo alerts, 
 
 #### Installation
 The easiest way to install it is through [HACS (Home Assistant Community Store)](https://github.com/hacs/integration),
-search for <i>MET Alerts Hungary</i> in the Integrations.<br /> <i>
+search for <i>MET Alerts Hungary</i> in the Integrations.<br />
 
 #### Configuration:
 Define sensor with the following configuration parameters:<br />
