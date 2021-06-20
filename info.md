@@ -4,7 +4,7 @@
 
 # Home Assistant custom component for meteo alerts in Hungary
 
-This custom component gathers meteo alerts from met.hu (valid only for Hungary).
+This custom component gathers regular and special meteo alerts from met.hu (valid only for Hungary).
 
 The state of the sensor will be the alert level of most dominant alert. The name of the alert with highest alert level
 will also be added into a dedicated attribute.
@@ -23,10 +23,12 @@ Define sensor with the following configuration parameters:<br />
 | :---- | :---- | :------- | :----------- |
 | name | **Y** | `met_alerts_hu` | name of the sensor |
 | region_id | **Y** | `101 (Budapest)` | region identifier |
+| county_id | **Y** | `13 (Pest county)` | county identifier |
 ---
 
 region_id can found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php).
 
+region_id can found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala).
 #### Example
 ```
 platform: met_alerts_hu
