@@ -26,10 +26,7 @@ DEFAULT_ICON = 'mdi:weather-lightning-rainy'
 DEFAULT_NAME = 'MET Alerts HU'
 DEFAULT_REGION = '101'
 
-alerts = ["Zivatar", "Felhőszakadás", "Széllökés", "Ónos eső","Hófúvás" ]
-special_alerts = ["Eső", "Havazás", "Extrém hideg", "Hőség", "Tartós, sűrű köd"]
-
-SCAN_INTERVAL = timedelta(minutes=2)
+SCAN_INTERVAL = timedelta(minutes=20)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_COUNTY, default=DEFAULT_COUNTY): cv.string,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
