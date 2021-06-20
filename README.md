@@ -28,7 +28,7 @@ Define sensor with the following configuration parameters:<br />
 
 region_id can found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php).
 
-region_id can found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala).
+county_id can found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala).
 #### Example
 ```
 platform: met_alerts_hu
