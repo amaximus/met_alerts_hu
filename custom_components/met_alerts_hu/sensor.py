@@ -86,10 +86,13 @@ async def async_get_mdata(self):
         a_lvl = '0'
       if not a_type in a_dict:
         a_dict[a_type] = a_lvl
-        ff_json += "{\"level\":\"" + a_lvl + "\",\"type\":\"" + a_type + "\"}"
+        ff_json += "{\"level\":\"" + a_lvl + \
+                   "\",\"type\":\"" + a_type + \
+                   "\",\"icon\":\"" + _get_icon(a_type) + "\"}"
         if i != len(td_lines)/3-1:
           ff_json += ","
       _LOGGER.debug(str(i) + ": " + a_type + ": " + a_lvl)
+    ff_json += "],\"nr_of_alerts\":\"" + str(int(len(td_lines)/3)) + "\""
 
     td_lines = [line for line in lines if ">Kiadva: " in line]
     last_upd1 = re.sub(r'<.*?>','',td_lines[0]).strip()
@@ -98,8 +101,7 @@ async def async_get_mdata(self):
                .replace('[wahx]','') \
                .replace("Kiadva: ",'')
 
-    ff_json += "],\"updated\":\"" + last_upd + "\"}"
-    _LOGGER.debug(ff_json)
+    ff_json += ",\"updated\":\"" + last_upd + "\"}"
 
     mjson = json.loads(ff_json)
 
@@ -125,7 +127,6 @@ class METAlertHUSensor(Entity):
 
         if 'alerts' in self._mdata:
             attr["alerts"] = self._mdata.get('alerts')
-            _LOGGER.debug(attr["alerts"])
 
             for item in self._mdata['alerts']:
                 val = item.get('level')
@@ -133,9 +134,10 @@ class METAlertHUSensor(Entity):
                     attr["dominant_met_alert_value"] = int(val)
                     attr["dominant_met_alert"] = item.get('type')
                     dominant_value = int(val)
+            attr["updated"] = self._mdata.get('updated')
+            attr["nr_of_alerts"] = self._mdata.get('nr_of_alerts')
         else:
             _LOGGER.debug("no alerts")
-            _LOGGER.debug(self)
         attr["provider"] = CONF_ATTRIBUTION
         return attr
 

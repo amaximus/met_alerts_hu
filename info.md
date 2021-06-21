@@ -79,6 +79,49 @@ card:
 
 ![Most dominant meteo alert example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert.png)
 
+If you want to show all alerts use the following (please note that this height of the card
+will allow only three alerts to be shown):
+```
+type: conditional
+conditions:
+  - entity: sensor.met_alerts
+    state_not: '0'
+card:
+  type: custom:button-card
+  size: 30px
+  styles:
+    label:
+      - font-size: 90%
+    card:
+      - height: 80px
+    label: >
+      [[[
+        var label = ""
+        var icolor = "black"
+        var met_alerts = states['sensor.met_alerts'].attributes.alerts;
+        for (var k=0; k < states['sensor.met_alerts'].attributes.nr_of_alerts; k++) {
+          if ( met_alerts[k].level == 1 ) {
+            icolor = "var(--paper-item-icon-active-color)";
+          } else if ( met_alerts[k].level == 2 ) {
+            icolor = "orange";
+          } else if ( met_alerts[k].level == 3 ) {
+            icolor = "red";
+          }
+          label += `<ha-icon icon="` + met_alerts[k].icon +
+                   `" style="width: 28px; height: 28px; color:` + icolor + `;"></ha-icon>&nbsp;` +
+                   (states['sensor.met_alerts'].attributes.nr_of_alerts == 1 ? `<br>` : ``) +
+                   `<span>` + met_alerts[k].type + `</span><br>`;
+        }
+        return label;
+      ]]]
+    show_label: true
+    show_name: false
+    show_icon: false
+    entity: sensor.met_alerts
+    color_type: icon
+```
+![All meteo alerts example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert1.png)
+
 ## Thanks
 
 Thanks to all the people who have contributed!
