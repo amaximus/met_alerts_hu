@@ -76,21 +76,20 @@ async def async_get_mdata(self):
 
     lines = rsp.split("\n") + rsp1.split("\n")
     td_lines = [line for line in lines if "<td class=" in line]
-    _LOGGER.debug(len(td_lines))
 
     for i in range(int((len(td_lines))/3)):
-      a_type = re.sub(r'<.*?>','',td_lines[i+2]).strip()
-      m = re.search(r'(w\d\.gif)',td_lines[i+1])
+      a_type = re.sub(r'<.*?>','',td_lines[i*3+2]).strip()
+      m = re.search(r'(w\d\.gif)',td_lines[i*3+1])
       if m != None:
         a_lvl = m.group(0).replace('w','').replace('.gif','')
       else:
-        a_lvl = 0
+        a_lvl = '0'
       if not a_type in a_dict:
         a_dict[a_type] = a_lvl
         ff_json += "{\"level\":\"" + a_lvl + "\",\"type\":\"" + a_type + "\"}"
         if i != len(td_lines)/3-1:
           ff_json += ","
-      _LOGGER.debug(a_type + ": " + a_lvl)
+      _LOGGER.debug(str(i) + ": " + a_type + ": " + a_lvl)
 
     td_lines = [line for line in lines if ">Kiadva: " in line]
     last_upd1 = re.sub(r'<.*?>','',td_lines[0]).strip()
@@ -123,7 +122,6 @@ class METAlertHUSensor(Entity):
     def device_state_attributes(self):
         attr = {}
         dominant_value = 0
-        #_LOGGER.debug(self._mdata)
 
         if 'alerts' in self._mdata:
             attr["alerts"] = self._mdata.get('alerts')
