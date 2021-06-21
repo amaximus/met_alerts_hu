@@ -81,7 +81,10 @@ async def async_get_mdata(self):
     for i in range(int((len(td_lines))/3)):
       a_type = re.sub(r'<.*?>','',td_lines[i+2]).strip()
       m = re.search(r'(w\d\.gif)',td_lines[i+1])
-      a_lvl = m.group(0).replace('w','').replace('.gif','')
+      if m != None:
+        a_lvl = m.group(0).replace('w','').replace('.gif','')
+      else:
+        a_lvl = 0
       if not a_type in a_dict:
         a_dict[a_type] = a_lvl
         ff_json += "{\"level\":\"" + a_lvl + "\",\"type\":\"" + a_type + "\"}"
