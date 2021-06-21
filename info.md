@@ -120,7 +120,7 @@ card:
     entity: sensor.met_alerts
     color_type: icon
 ```
-![All meteo alerts example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert1.png)
+![All meteo alerts example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert2.png)
 
 ## Thanks
 
