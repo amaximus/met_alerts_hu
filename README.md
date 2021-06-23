@@ -23,12 +23,13 @@ Define sensor with the following configuration parameters:<br />
 | :---- | :---- | :------- | :----------- |
 | name | **Y** | `met_alerts_hu` | name of the sensor |
 | region_id | **Y** | `101 (Budapest)` | region identifier |
-| county_id | **Y** | `13 (Pest county)` | county identifier |
+| county_id | **Y** | `` | county identifier |
 ---
 
 region_id can found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php).
 
-county_id can found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala).
+county_id can found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). Special meteo conditions (like forecasts from next 0-24 hours) will not be shown when county_id is not specified.
+
 #### Example
 ```
 platform: met_alerts_hu
@@ -108,17 +109,18 @@ card:
           icolor = "red";
         }
         label += `<ha-icon icon="` + met_alerts[k].icon +
-                 `" style="width: 28px; height: 28px; color:` + icolor + `;"></ha-icon>&nbsp;` +
+                 `" style="width: 30px; height: 30px; margin-bottom: 10px; color:` + icolor + `;">
+                 </ha-icon>&nbsp;` +
                  (states['sensor.met_alerts'].attributes.nr_of_alerts == 1 ? `<br>` : ``) +
                  `<span>` + met_alerts[k].type + `</span><br>`;
       }
       return label;
     ]]]
-    show_label: true
-    show_name: false
-    show_icon: false
-    entity: sensor.met_alerts
-    color_type: icon
+  show_label: true
+  show_name: false
+  show_icon: false
+  entity: sensor.met_alerts
+  color_type: icon
 ```
 ![All meteo alerts example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert2.png)
 

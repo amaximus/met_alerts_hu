@@ -4,6 +4,7 @@ import logging
 import re
 import voluptuous as vol
 import aiohttp
+from datetime import datetime
 from datetime import timedelta
 
 from homeassistant.components.sensor import PLATFORM_SCHEMA
@@ -21,7 +22,7 @@ CONF_COUNTY = 'county_id'
 CONF_NAME = 'name'
 CONF_REGION = 'region_id'
 
-DEFAULT_COUNTY = '13'
+DEFAULT_COUNTY = ''
 DEFAULT_ICON = 'mdi:weather-lightning-rainy'
 DEFAULT_NAME = 'MET Alerts HU'
 DEFAULT_REGION = '101'
@@ -70,9 +71,12 @@ async def async_get_mdata(self):
     async with self._session.get(url) as response:
       rsp = await response.text()
 
-    url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wbhx&kod=' + self._county_id
-    async with self._session.get(url) as response:
-      rsp1 = await response.text()
+    if len(self._county_id) == 0:
+      rsp1 = ''
+    else:
+      url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wbhx&kod=' + self._county_id
+      async with self._session.get(url) as response:
+        rsp1 = await response.text()
 
     lines = rsp.split("\n") + rsp1.split("\n")
     td_lines = [line for line in lines if "<td class=" in line]
@@ -95,11 +99,15 @@ async def async_get_mdata(self):
     ff_json += "],\"nr_of_alerts\":\"" + str(int(len(td_lines)/3)) + "\""
 
     td_lines = [line for line in lines if ">Kiadva: " in line]
-    last_upd1 = re.sub(r'<.*?>','',td_lines[0]).strip()
-    last_upd = re.sub(r'(\(.*?\))','',last_upd1) \
-               .replace('[wbhx]','') \
-               .replace('[wahx]','') \
-               .replace("Kiadva: ",'')
+    if len(td_lines) > 0:
+      last_upd1 = re.sub(r'<.*?>','',td_lines[0]).strip()
+      last_upd = re.sub(r'(\(.*?\))','',last_upd1) \
+                .replace('[wbhx]','') \
+                .replace('[wahx]','') \
+                .replace("Kiadva: ",'')
+    else:
+      now = datetime.now()
+      last_upd = now.strftime("%Y-%m-%d %H:%M")
 
     ff_json += ",\"updated\":\"" + last_upd + "\"}"
 

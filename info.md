@@ -23,16 +23,17 @@ Define sensor with the following configuration parameters:<br />
 | :---- | :---- | :------- | :----------- |
 | name | **Y** | `met_alerts_hu` | name of the sensor |
 | region_id | **Y** | `101 (Budapest)` | region identifier |
-| county_id | **Y** | `13 (Pest county)` | county identifier |
+| county_id | **Y** | `` | county identifier |
 ---
 
 region_id can found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php).
 
-county_id can found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala).
+county_id can found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). Special meteo conditions (like forecasts from next 0-24 hours) will not be shown when county_id is not specified.
+
 #### Example
 ```
 platform: met_alerts_hu
-name: 'MET riasztás'
+name: 'MET alerts'
 ```
 
 #### Lovelace UI
@@ -94,31 +95,32 @@ card:
       - font-size: 90%
     card:
       - height: 80px
-    label: >
-      [[[
-        var label = ""
-        var icolor = "black"
-        var met_alerts = states['sensor.met_alerts'].attributes.alerts;
-        for (var k=0; k < states['sensor.met_alerts'].attributes.nr_of_alerts; k++) {
-          if ( met_alerts[k].level == 1 ) {
-            icolor = "var(--paper-item-icon-active-color)";
-          } else if ( met_alerts[k].level == 2 ) {
-            icolor = "orange";
-          } else if ( met_alerts[k].level == 3 ) {
-            icolor = "red";
-          }
-          label += `<ha-icon icon="` + met_alerts[k].icon +
-                   `" style="width: 28px; height: 28px; color:` + icolor + `;"></ha-icon>&nbsp;` +
-                   (states['sensor.met_alerts'].attributes.nr_of_alerts == 1 ? `<br>` : ``) +
-                   `<span>` + met_alerts[k].type + `</span><br>`;
+  label: >
+    [[[
+      var label = ""
+      var icolor = "black"
+      var met_alerts = states['sensor.met_alerts'].attributes.alerts;
+      for (var k=0; k < states['sensor.met_alerts'].attributes.nr_of_alerts; k++) {
+        if ( met_alerts[k].level == 1 ) {
+          icolor = "var(--paper-item-icon-active-color)";
+        } else if ( met_alerts[k].level == 2 ) {
+          icolor = "orange";
+        } else if ( met_alerts[k].level == 3 ) {
+          icolor = "red";
         }
-        return label;
-      ]]]
-    show_label: true
-    show_name: false
-    show_icon: false
-    entity: sensor.met_alerts
-    color_type: icon
+        label += `<ha-icon icon="` + met_alerts[k].icon +
+                 `" style="width: 30px; height: 30px; margin-bottom: 10px; color:` + icolor + `;">
+                 </ha-icon>&nbsp;` +
+                 (states['sensor.met_alerts'].attributes.nr_of_alerts == 1 ? `<br>` : ``) +
+                 `<span>` + met_alerts[k].type + `</span><br>`;
+      }
+      return label;
+    ]]]
+  show_label: true
+  show_name: false
+  show_icon: false
+  entity: sensor.met_alerts
+  color_type: icon
 ```
 ![All meteo alerts example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert2.png)
 
