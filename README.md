@@ -28,7 +28,7 @@ Define sensor with the following configuration parameters:<br />
 
 region_id can found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php).
 
-county_id can found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). Special meteo conditions (like forecasts from next 0-24 hours) will not be shown when county_id is not specified.
+county_id can be found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). Special meteo conditions (like forecasts from next 0-24 hours) will not be shown when county_id is not specified.
 
 #### Example
 ```
@@ -109,7 +109,7 @@ card:
           icolor = "red";
         }
         label += `<ha-icon icon="` + met_alerts[k].icon +
-                 `" style="width: 30px; height: 30px; margin-bottom: 10px; color:` + icolor + `;">
+                 `" style="width: 28px; height: 28px; color:` + icolor + `;">
                  </ha-icon>&nbsp;` +
                  (states['sensor.met_alerts'].attributes.nr_of_alerts == 1 ? `<br>` : ``) +
                  `<span>` + met_alerts[k].type + `</span><br>`;
