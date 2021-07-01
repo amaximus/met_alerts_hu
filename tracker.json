@@ -1,7 +1,7 @@
 {
   "met_alerts_hu": {
-    "version": "2.1.0",
-    "updated_at": "2021-06-23",
+    "version": "2.2.0",
+    "updated_at": "2021-07-01",
     "visit_repo": "https://github.com/amaximus/met_alerts_hu",
     "changelog": "https://github.com/amaximus/met_alerts_hu/releases/2.1.0"
   }

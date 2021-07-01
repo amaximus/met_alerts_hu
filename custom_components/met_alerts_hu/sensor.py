@@ -67,7 +67,7 @@ async def async_get_mdata(self):
     ff_json = "{\"alerts\": ["
     a_dict = dict()
 
-    url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wahx&kt=' + self._region_id
+    url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wahx&kod=' + self._region_id
     async with self._session.get(url) as response:
       rsp = await response.text()
 
