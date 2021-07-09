@@ -80,6 +80,7 @@ async def async_get_mdata(self):
 
     lines = rsp.split("\n") + rsp1.split("\n")
     td_lines = [line for line in lines if "<td class=" in line]
+    j = 0 # number of duplicated alerts
 
     for i in range(int((len(td_lines))/3)):
       a_type = re.sub(r'<.*?>','',td_lines[i*3+2]).strip()
@@ -95,8 +96,10 @@ async def async_get_mdata(self):
                    "\",\"icon\":\"" + _get_icon(a_type) + "\"}"
         if i != len(td_lines)/3-1:
           ff_json += ","
-      _LOGGER.debug(str(i) + ": " + a_type + ": " + a_lvl)
-    ff_json += "],\"nr_of_alerts\":\"" + str(int(len(td_lines)/3)) + "\""
+      else:
+        j += 1
+      _LOGGER.debug(str(i) + "/" + str(j) + ": " + a_type + ": " + a_lvl)
+    ff_json += "],\"nr_of_alerts\":\"" + str(int(len(td_lines)/3) - j) + "\""
 
     td_lines = [line for line in lines if ">Kiadva: " in line]
     if len(td_lines) > 0:

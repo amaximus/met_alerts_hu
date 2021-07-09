@@ -30,6 +30,8 @@ region_id can found as kt value in the URL when hovering on the region at [MET V
 
 county_id can be found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). Special meteo conditions (like forecasts from next 0-24 hours) will not be shown when county_id is not specified.
 
+![Meteo alerts attributes](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alerts_attrs.png)
+
 #### Example
 ```
 platform: met_alerts_hu
@@ -109,9 +111,10 @@ card:
           icolor = "red";
         }
         label += `<ha-icon icon="` + met_alerts[k].icon +
-                 `" style="width: 28px; height: 28px; color:` + icolor + `;">
-                 </ha-icon>&nbsp;` +
-                 (states['sensor.met_alerts'].attributes.nr_of_alerts == 1 ? `<br>` : ``) +
+                 `" style="width: 28px; height: 28px; color:` + icolor +
+                  (states['sensor.met_alerts'].attributes.nr_of_alerts == 1 ? `; margin-bottom: 10px;">` : `;">`) +
+                  `</ha-icon>&nbsp;` +
+                  (states['sensor.met_alerts'].attributes.nr_of_alerts == 1 ? `<br>` : ``) +
                  `<span>` + met_alerts[k].type + `</span><br>`;
       }
       return label;
