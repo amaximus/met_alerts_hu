@@ -113,8 +113,10 @@ async def async_get_mdata(self):
       last_upd = now.strftime("%Y-%m-%d %H:%M")
 
     ff_json += ",\"updated\":\"" + last_upd + "\"}"
+    ff_json_final = ff_json.replace('},]','}]')
+    _LOGGER.debug(ff_json_final)
 
-    mjson = json.loads(ff_json)
+    mjson = json.loads(ff_json_final)
 
     return mjson
 
