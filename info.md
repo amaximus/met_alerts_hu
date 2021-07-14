@@ -6,10 +6,10 @@
 
 This custom component gathers regular and special meteo alerts from met.hu (valid only for Hungary).
 
-The state of the sensor will be the alert level of most dominant alert. The name of the alert with highest alert level
+The state of the sensor will be the highest current alert level. The name of the alert with highest alert level
 will also be added into a dedicated attribute.
 
-The sensor will also report in attributes the values of all other meteo alerts, if there are any.
+The sensor will also report in attributes the values of all other meteo alerts and/or forecasts from next 12-24 hours, if there are any.
 
 #### Installation
 The easiest way to install it is through [HACS (Home Assistant Community Store)](https://github.com/hacs/integration),
@@ -26,9 +26,9 @@ Define sensor with the following configuration parameters:<br />
 | county_id | **Y** | `` | county identifier |
 ---
 
-region_id can be found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php). When set it will display the current weather alerts.
+region_id can be found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php). When set it will report the current weather alerts.
 
-county_id can be found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). When set it will display the special meteo conditions e.g. forecasts from next 0-24 hours.
+county_id can be found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). When set it will report the special meteo conditions e.g. forecasts from next 12-24 hours.
 
 If you don't want to combine the two (weather alerts and forecasts) but still want to have both information, define two sensors, one with region_id set and one with county_id set.
 
