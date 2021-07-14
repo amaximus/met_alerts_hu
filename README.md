@@ -26,7 +26,7 @@ Define sensor with the following configuration parameters:<br />
 | county_id | **Y** | `` | county identifier |
 ---
 
-region_id can found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php). When set it will display the current weather alerts.
+region_id can be found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php). When set it will display the current weather alerts.
 
 county_id can be found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). When set it will display the special meteo conditions e.g. forecasts from next 0-24 hours.
 
