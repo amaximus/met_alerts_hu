@@ -25,7 +25,7 @@ CONF_REGION = 'region_id'
 DEFAULT_COUNTY = ''
 DEFAULT_ICON = 'mdi:weather-lightning-rainy'
 DEFAULT_NAME = 'MET Alerts HU'
-DEFAULT_REGION = '101'
+DEFAULT_REGION = ''
 
 SCAN_INTERVAL = timedelta(minutes=20)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
@@ -66,14 +66,15 @@ async def async_get_mdata(self):
     mjson = {}
     ff_json = "{\"alerts\": ["
     a_dict = dict()
+    rsp = ''
+    rsp1 = ''
 
-    url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wahx&kod=' + self._region_id
-    async with self._session.get(url) as response:
-      rsp = await response.text()
+    if len(self._region_id) != 0:
+      url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wahx&kod=' + self._region_id
+      async with self._session.get(url) as response:
+        rsp = await response.text()
 
-    if len(self._county_id) == 0:
-      rsp1 = ''
-    else:
+    if len(self._county_id) != 0:
       url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wbhx&kod=' + self._county_id
       async with self._session.get(url) as response:
         rsp1 = await response.text()

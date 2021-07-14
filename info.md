@@ -22,13 +22,15 @@ Define sensor with the following configuration parameters:<br />
 | Name | Optional | `Default` | Description |
 | :---- | :---- | :------- | :----------- |
 | name | **Y** | `met_alerts_hu` | name of the sensor |
-| region_id | **Y** | `101 (Budapest)` | region identifier |
+| region_id | **Y** | `` | region identifier |
 | county_id | **Y** | `` | county identifier |
 ---
 
-region_id can found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php).
+region_id can found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php). When set it will display the current weather alerts.
 
-county_id can be found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). Special meteo conditions (like forecasts from next 0-24 hours) will not be shown when county_id is not specified.
+county_id can be found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). When set it will display the special meteo conditions e.g. forecasts from next 0-24 hours.
+
+If you don't want to combine the two (weather alerts and forecasts) but still want to have both information, define two sensors, one with region_id set and one with county_id set.
 
 ![Meteo alerts attributes](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alerts_attrs.png)
 
@@ -36,6 +38,8 @@ county_id can be found as serial value of the county when counties are sorted al
 ```
 platform: met_alerts_hu
 name: 'MET alerts'
+region_id: 101 # Budapest
+county_id: 13 # Pest county
 ```
 
 #### Lovelace UI
