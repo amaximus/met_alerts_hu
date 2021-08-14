@@ -135,4 +135,4 @@ card:
 
 Thanks to all the people who have contributed!
 
-[![contributors](https://contributors-img.web.app/image?repo=amaximus/pollen_hu)](https://github.com/amaximus/pollen_hu/graphs/contributors)
+[![contributors](https://contributors-img.web.app/image?repo=amaximus/met_alerts_hu)](https://github.com/amaximus/met_alerts_hu/graphs/contributors)
