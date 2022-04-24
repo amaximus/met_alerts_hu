@@ -36,15 +36,15 @@ If you don't want to combine the two (weather alerts and forecasts) but still wa
 
 #### Example
 ```
-platform: met_alerts_hu
-name: 'MET alerts'
-region_id: 101 # Budapest
-county_id: 13 # Pest county
+sensor:
+  - platform: met_alerts_hu
+    name: 'MET alerts'
+    region_id: 101 # Budapest
+    county_id: 13 # Pest county
 ```
 
 #### Lovelace UI
-If you want to show the dominant alert use the following:
-
+The following example displays the dominant alert and makes use of the non-standard custom button card (thus needs to be installed first via HACS->Frontend):
 ```
 type: conditional
 conditions:
@@ -86,7 +86,7 @@ card:
 
 ![Most dominant meteo alert example](https://raw.githubusercontent.com/amaximus/met_alerts_hu/main/met_alert.png)
 
-If you want to show all alerts use the following (please note that this height of the card
+The following example displays all alerts and it also makes use of the non-standard custom buitton card (please note that this height of the card
 will allow only three alerts to be shown):
 ```
 type: conditional
