@@ -19,17 +19,20 @@ _LOGGER = logging.getLogger(__name__)
 
 CONF_ATTRIBUTION = "Data provided by met.hu"
 CONF_COUNTY = 'county_id'
+CONF_LANG = 'lang'
 CONF_NAME = 'name'
 CONF_REGION = 'region_id'
 
 DEFAULT_COUNTY = ''
 DEFAULT_ICON = 'mdi:weather-lightning-rainy'
+DEFAULT_LANG = 'hu'
 DEFAULT_NAME = 'MET Alerts HU'
 DEFAULT_REGION = ''
 
 SCAN_INTERVAL = timedelta(minutes=20)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_COUNTY, default=DEFAULT_COUNTY): cv.string,
+    vol.Optional(CONF_LANG, default=DEFAULT_LANG): cv.string,
     vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
     vol.Optional(CONF_REGION, default=DEFAULT_REGION): cv.string,
 })
@@ -37,15 +40,25 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 def _get_icon(argument):
     switcher = {
       "Zivatar": "mdi:weather-lightning-rainy",
+      "Thunderstorm": "mdi:weather-lightning-rainy",
       "Felhőszakadás": "mdi:weather-pouring",
+      "Torrential rain": "mdi:weather-pouring",
       "Széllökés": "mdi:weather-windy",
+      "Wind Gust": "mdi:weather-windy",
       "Ónos eső": "mdi:weather-snowy-rainy",
+      "Freezing rain": "mdi:weather-snowy-rainy",
       "Hófúvás": "mdi:weather-snowy-heavy",
+      "Blowing snow": "mdi:weather-snowy-heavy",
       "Eső": "mdi:water-alert",
+      "Rain": "mdi:water-alert",
       "Havazás": "mdi:snowflake",
+      "Snowfall": "mdi:snowflake",
       "Extrém hideg": "mdi:snowflake-alert",
+      "Low temperature": "mdi:snowflake-alert",
       "Hőség": "mdi:weather-sunny-alert",
+      "High temperature": "mdi:weather-sunny-alert",
       "Tartós, sűrű köd": "mdi:weather-fog",
+      "Dense fog": "mdi:weather-fog",
     }
     return switcher.get(argument)
 
@@ -56,11 +69,12 @@ def _match_line(my_string, matchthis):
 @asyncio.coroutine
 def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
     name = config.get(CONF_NAME)
+    lang = config.get(CONF_LANG)
     region_id = config.get(CONF_REGION)
     county_id = config.get(CONF_COUNTY)
 
     async_add_devices(
-        [METAlertHUSensor(hass, name, region_id, county_id )],update_before_add=True)
+        [METAlertHUSensor(hass, name, lang, region_id, county_id )],update_before_add=True)
 
 async def async_get_mdata(self):
     mjson = {}
@@ -68,14 +82,20 @@ async def async_get_mdata(self):
     a_dict = dict()
     rsp = ''
     rsp1 = ''
+    id1 = 'wahx'
+    id2 = 'wbhx'
+
+    if self._lang.lower() == 'en':
+      id1 = 'waex'
+      id2 = 'wbex'
 
     if len(self._region_id) != 0:
-      url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wahx&kod=' + self._region_id
+      url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=' + id1 + '&kod=' + self._region_id
       async with self._session.get(url) as response:
         rsp = await response.text()
 
     if len(self._county_id) != 0:
-      url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=wbhx&kod=' + self._county_id
+      url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=' + id2 + '&kod=' + self._county_id
       async with self._session.get(url) as response:
         rsp1 = await response.text()
 
@@ -106,7 +126,9 @@ async def async_get_mdata(self):
     if len(td_lines) > 0:
       last_upd1 = re.sub(r'<.*?>','',td_lines[0]).strip()
       last_upd = re.sub(r'(\(.*?\))','',last_upd1) \
+                .replace('[wbex]','') \
                 .replace('[wbhx]','') \
+                .replace('[waex]','') \
                 .replace('[wahx]','') \
                 .replace("Kiadva: ",'')
     else:
@@ -123,10 +145,11 @@ async def async_get_mdata(self):
 
 class METAlertHUSensor(Entity):
 
-    def __init__(self, hass, name, region_id, county_id):
+    def __init__(self, hass, name, lang, region_id, county_id):
         """Initialize the sensor."""
         self._hass = hass
         self._name = name
+        self._lang = lang
         self._region_id = region_id
         self._county_id = county_id
         self._state = None

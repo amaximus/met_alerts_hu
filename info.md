@@ -24,11 +24,14 @@ Define sensor with the following configuration parameters:<br />
 | name | **Y** | `met_alerts_hu` | name of the sensor |
 | region_id | **Y** | `` | region identifier |
 | county_id | **Y** | `` | county identifier |
+| lang | **Y** | `hu` | language tag |
 ---
 
 region_id can be found as kt value in the URL when hovering on the region at [MET Vészjelzés](https://www.met.hu/idojaras/veszelyjelzes/index.php). When set it will report the current weather alerts.
 
 county_id can be found as serial value of the county when counties are sorted alphabetically (1: reserved, 2: Baranya;...; 20: Zala). When set it will report the special meteo conditions e.g. forecasts from next 12-24 hours.
+
+Language tag should follow [IANA subtag registry](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry). met.hu currently supports only `hu` and `en`.
 
 If you don't want to combine the two (weather alerts and forecasts) but still want to have both information, define two sensors, one with region_id set and one with county_id set.
 
@@ -41,6 +44,7 @@ sensor:
     name: 'MET alerts'
     region_id: 101 # Budapest
     county_id: 13 # Pest county
+    lang: hu
 ```
 
 #### Lovelace UI
