@@ -1,8 +1,8 @@
 {
   "met_alerts_hu": {
-    "version": "2.4.0",
-    "updated_at": "2022-05-03",
+    "version": "2.5.0",
+    "updated_at": "2023-06-08",
     "visit_repo": "https://github.com/amaximus/met_alerts_hu",
-    "changelog": "https://github.com/amaximus/met_alerts_hu/releases/2.4.0"
+    "changelog": "https://github.com/amaximus/met_alerts_hu/releases/2.5.0"
   }
 }
