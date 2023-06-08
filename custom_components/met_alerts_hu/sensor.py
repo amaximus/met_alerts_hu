@@ -66,8 +66,7 @@ def _match_line(my_string, matchthis):
     matched_line = [line for line in my_string.split('\n') if matchthis in line]
     return matched_line
 
-@asyncio.coroutine
-def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
+async def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
     name = config.get(CONF_NAME)
     lang = config.get(CONF_LANG)
     region_id = config.get(CONF_REGION)
@@ -178,7 +177,6 @@ class METAlertHUSensor(Entity):
         attr["provider"] = CONF_ATTRIBUTION
         return attr
 
-    @asyncio.coroutine
     async def async_update(self):
         dominant_value = 0
 
