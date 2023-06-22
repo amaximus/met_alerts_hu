@@ -55,6 +55,7 @@ def _get_icon(argument):
       "Extrém hideg": "mdi:snowflake-alert",
       "Low temperature": "mdi:snowflake-alert",
       "Hőség": "mdi:weather-sunny-alert",
+      "Magas középhőmérséklet": "mdi:weather-sunny-alert",
       "High temperature": "mdi:weather-sunny-alert",
       "Tartós, sűrű köd": "mdi:weather-fog",
       "Dense fog": "mdi:weather-fog",
