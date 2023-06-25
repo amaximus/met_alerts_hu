@@ -111,9 +111,12 @@ async def async_get_mdata(self):
         a_lvl = '0'
       if not a_type in a_dict:
         a_dict[a_type] = a_lvl
+        ico = _get_icon(a_type)
+        if ico is None:
+           ico = DEFAULT_ICON
         ff_json += "{\"level\":\"" + a_lvl + \
                    "\",\"type\":\"" + a_type + \
-                   "\",\"icon\":\"" + _get_icon(a_type) + "\"}"
+                   "\",\"icon\":\"" + ico + "\"}"
         if i != len(td_lines)/3-1:
           ff_json += ","
       else:
@@ -189,6 +192,8 @@ class METAlertHUSensor(Entity):
                 if int(val) > dominant_value:
                     dominant_value = int(val)
                     self._icon = _get_icon(item.get('type'))
+                    if self._icon is None:
+                       self._icon = DEFAULT_ICON
 
         self._state = dominant_value
         return self._state

@@ -3,7 +3,7 @@
   "name": "Meteo Alert Hungary",
   "documentation": "https://github.com/amaximus/met_alerts_hu",
   "issue_tracker": "https://github.com/amaximus/met_alerts_hu/issues",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "dependencies": [],
   "codeowners": ["@amaximus"],
   "iot_class": "cloud_polling",
