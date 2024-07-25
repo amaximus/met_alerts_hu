@@ -83,6 +83,7 @@ async def async_get_mdata(self):
     rsp1 = ''
     id1 = 'wahx'
     id2 = 'wbhx'
+    successful_poll = "true"
 
     if self._lang.lower() == 'en':
       id1 = 'waex'
@@ -90,54 +91,73 @@ async def async_get_mdata(self):
 
     if len(self._region_id) != 0:
       url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=' + id1 + '&kod=' + self._region_id
-      async with self._session.get(url) as response:
-        rsp = await response.text()
+      try:
+        async with self._session.get(url) as response:
+          rsp = await response.text()
+        if response.status != 200:
+          rsp = ""
+          successful_poll = "false"
+      except(aiohttp.client_exceptions.ClientConnectorError):
+        rsp = ""
+        successful_poll = "false"
 
     if len(self._county_id) != 0:
       url = 'https://www.met.hu/idojaras/veszelyjelzes/hover.php?id=' + id2 + '&kod=' + self._county_id
-      async with self._session.get(url) as response:
-        rsp1 = await response.text()
+      try:
+        async with self._session.get(url) as response:
+          rsp1 = await response.text()
+        if response.status != 200:
+          rsp1 = ""
+          successful_poll = "false"
+      except(aiohttp.client_exceptions.ClientConnectorError):
+        rsp1 = ""
+        successful_poll = "false"
 
     lines = rsp.split("\n") + rsp1.split("\n")
-    td_lines = [line for line in lines if "<td class=" in line]
-    j = 0 # number of duplicated alerts
+    if len(lines) > 0:
+      td_lines = [line for line in lines if "<td class=" in line]
+      j = 0 # number of duplicated alerts
 
-    for i in range(int((len(td_lines))/3)):
-      a_type = re.sub(r'<.*?>','',td_lines[i*3+2]).strip()
-      m = re.search(r'(w\d\.gif)',td_lines[i*3+1])
-      if m != None:
-        a_lvl = m.group(0).replace('w','').replace('.gif','')
-      else:
-        a_lvl = '0'
-      if not a_type in a_dict:
-        a_dict[a_type] = a_lvl
-        ico = _get_icon(a_type)
-        if ico is None:
-           ico = DEFAULT_ICON
-        ff_json += "{\"level\":\"" + a_lvl + \
-                   "\",\"type\":\"" + a_type + \
-                   "\",\"icon\":\"" + ico + "\"}"
-        if i != len(td_lines)/3-1:
-          ff_json += ","
-      else:
-        j += 1
-      _LOGGER.debug(str(i) + "/" + str(j) + ": " + a_type + ": " + a_lvl)
-    ff_json += "],\"nr_of_alerts\":\"" + str(int(len(td_lines)/3) - j) + "\""
+      for i in range(int((len(td_lines))/3)):
+        a_type = re.sub(r'<.*?>','',td_lines[i*3+2]).strip()
+        m = re.search(r'(w\d\.gif)',td_lines[i*3+1])
+        if m != None:
+          a_lvl = m.group(0).replace('w','').replace('.gif','')
+        else:
+          a_lvl = '0'
+        if not a_type in a_dict:
+          a_dict[a_type] = a_lvl
+          ico = _get_icon(a_type)
+          if ico is None:
+            ico = DEFAULT_ICON
+          ff_json += "{\"level\":\"" + a_lvl + \
+                     "\",\"type\":\"" + a_type + \
+                     "\",\"icon\":\"" + ico + "\"}"
+          if i != len(td_lines)/3-1:
+            ff_json += ","
+        else:
+          j += 1
+        _LOGGER.debug(str(i) + "/" + str(j) + ": " + a_type + ": " + a_lvl)
+      ff_json += "],\"nr_of_alerts\":\"" + str(int(len(td_lines)/3) - j) + "\""
 
-    td_lines = [line for line in lines if ">Kiadva: " in line]
-    if len(td_lines) > 0:
-      last_upd1 = re.sub(r'<.*?>','',td_lines[0]).strip()
-      last_upd = re.sub(r'(\(.*?\))','',last_upd1) \
-                .replace('[wbex]','') \
-                .replace('[wbhx]','') \
-                .replace('[waex]','') \
-                .replace('[wahx]','') \
-                .replace("Kiadva: ",'')
+      td_lines = [line for line in lines if ">Kiadva: " in line]
+      if len(td_lines) > 0:
+        last_upd1 = re.sub(r'<.*?>','',td_lines[0]).strip()
+        last_upd = re.sub(r'(\(.*?\))','',last_upd1) \
+                  .replace('[wbex]','') \
+                  .replace('[wbhx]','') \
+                  .replace('[waex]','') \
+                  .replace('[wahx]','') \
+                  .replace("Kiadva: ",'')
+      else:
+        now = datetime.now()
+        last_upd = now.strftime("%Y-%m-%d %H:%M")
     else:
+      ffjson += "]"
       now = datetime.now()
       last_upd = now.strftime("%Y-%m-%d %H:%M")
 
-    ff_json += ",\"updated\":\"" + last_upd + "\"}"
+    ff_json += ",\"updated\":\"" + last_upd + "\",\"successful_poll\":\"" + successful_poll + "\"}"
     ff_json_final = ff_json.replace('},]','}]')
     _LOGGER.debug(ff_json_final)
 
@@ -177,6 +197,7 @@ class METAlertHUSensor(Entity):
             attr["nr_of_alerts"] = self._mdata.get('nr_of_alerts')
         else:
             _LOGGER.debug("no alerts")
+        attr["successful_poll"] = self._mdata.get('successful_poll')
         attr["provider"] = CONF_ATTRIBUTION
         return attr
 
